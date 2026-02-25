@@ -1,15 +1,12 @@
 #!/bin/bash
 
-# Variable
-SOURCE_DIR="/home/$USER/testdata"
-BACKUP_DIR="/home/$USER/backup"
-DATE=$(date +%Y-%m-%d_%H-%M-%S)
+# Variables
+PROJECT_DIR=$(pwd)
+BACKUP_DIR="backup"
+DATE=$(date +%Y_%m_%d)
+BACKUP_FILE="backup_$DATE.tar.gz"
 
-# Check if source directory exists
-if [ ! -d "$SOURCE_DIR" ]; then
-    echo "Source directory does not exist!"
-    exit 1
-fi
+echo "Starting backup..."
 
 # Create backup directory if not exists
 if [ ! -d "$BACKUP_DIR" ]; then
@@ -17,12 +14,13 @@ if [ ! -d "$BACKUP_DIR" ]; then
     echo "Backup directory created."
 fi
 
-# Loop through files and copy
-for file in $SOURCE_DIR/*; do
-    cp "$file" "$BACKUP_DIR/"
-done
-
 # Create compressed backup
-tar -czf "$BACKUP_DIR/backup_$DATE.tar.gz" -C "$BACKUP_DIR" .
+tar -czf "$BACKUP_DIR/$BACKUP_FILE" "$PROJECT_DIR" --exclude="$BACKUP_DIR"
 
-echo "Backup completed successfully!"
+echo "Backup created: $BACKUP_FILE"
+
+# Delete backups older than 7 days
+find "$BACKUP_DIR" -name "backup_*.tar.gz" -mtime +7 -exec rm {} \;
+
+echo "Old backups deleted (if any)."
+echo "Backup process completed successfully!"
