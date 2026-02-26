@@ -1,4 +1,5 @@
 # Devops-automation-toolkit
+# This is my GIT & GITHUB task repositary. 
 # PRESENTED BY: MEHAKPREET KAUR
  # 1.What is a repository?
 - A repository (repo) is a storage location where project files, source code, configuration files, and version history are managed using Git.
